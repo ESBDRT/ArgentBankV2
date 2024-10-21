@@ -1,7 +1,12 @@
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
+import { useSelector } from 'react-redux';
 
 function User() {
+
+  const firstName = useSelector((state)=>state.auth.firstName)
+  const lastName = useSelector((state)=>state.auth.lastName)
+
   return (
     <>
       <Header />
@@ -10,7 +15,7 @@ function User() {
           <h1>
             Welcome back
             <br />
-            Tony Jarvis!
+            {firstName} {lastName}
           </h1>
           <button class="edit-button">Edit Name</button>
         </div>

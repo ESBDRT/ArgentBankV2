@@ -1,53 +1,76 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
-import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../redux/authSlice";
 
 function Signin() {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   function SigninRequest(event) {
-
-    var email = document.getElementById('username').value
-    var password = document.getElementById('password').value
-
     event.preventDefault();
-        console.log('You clicked submit.');
-        axios.post('http://localhost:3001/api/v1/user/login', {
-            email: email,
-            password: password
+
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    axios
+      .post("http://localhost:3001/api/v1/user/login", {
+        email: email,
+        password: password,
+      })
+      .then(function (LoginResponse) {
+        const token = LoginResponse.data.body.token;
+        localStorage.setItem("token", token);
+        axios.defaults.headers.common = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        return axios.post("http://localhost:3001/api/v1/user/profile", {});
+      })
+      .then(function (profileResponse) {
+        const userProfile = profileResponse.data.body;
+        dispatch(
+          setCredentials({
+            firstName: userProfile.firstName,
+            lastName: userProfile.lastName,
+            isUserSignedInOut: "Sign out",
           })
-          .then(function (response) {
-            const token = response.data.body.token
-            localStorage.setItem(token, Date.now());
-            navigate('/user')
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-    } 
+        );
+        navigate("/user");
+      })
+      .catch(function (error) {
+        console.log("Error:", error);
+      });
+  }
+
   return (
     <body>
       <Header />
-      <main class="main bg-dark">
-        <section class="sign-in-content">
-          <i class="fa fa-user-circle sign-in-icon"></i>
+      <main className="main bg-dark">
+        <section className="sign-in-content">
+          <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
           <form onSubmit={SigninRequest}>
-            <div class="input-wrapper">
-              <label for="username">Username</label>
+            <div className="input-wrapper">
+              <label htmlFor="username">Username</label>
               <input type="text" id="username" />
             </div>
-            <div class="input-wrapper">
-              <label for="password">Password</label>
+            <div className="input-wrapper">
+              <label htmlFor="password">Password</label>
               <input type="password" id="password" />
             </div>
-            <div class="input-remember">
+            <div className="input-remember">
               <input type="checkbox" id="remember-me" />
-              <label for="remember-me">Remember me</label>
+              <label htmlFor="remember-me">Remember me</label>
             </div>
-            <input type="submit" class="sign-in-button" id="sign-in-button"/>
+            <input
+              type="submit"
+              className="sign-in-button"
+              id="sign-in-button"
+            />
           </form>
         </section>
       </main>
