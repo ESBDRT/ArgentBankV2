@@ -57,6 +57,8 @@ body {
 .main-nav-item {
   text-decoration: none;
   margin-right: 0.5rem;
+  display: flex;
+  gap: 10px;
 }
 
 .main-nav-item:hover {

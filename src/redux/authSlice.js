@@ -5,21 +5,26 @@ const authSlice = createSlice({
   initialState: {
     firstName: null,
     lastName: null,
-    isUserSignedInOut: null,
+    token: null,
+    isConnected: "Login",
   },
   reducers: {
     setCredentials: (state, action) => {
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
-      state.isUserSignedInOut = action.payload.isUserSignedInOut;
+    },
+    setToken: (state, action) => {
+      state.token = action.payload.token;
+      state.isConnected = action.payload.isConnected;
     },
     logout: (state) => {
-      state.firstName = null;
-      state.lastName = null;
-      state.isUserSignedInOut = null;
+      state.firstName = null
+      state.lastName = null
+      state.token = null
+      state.isConnected = "Sign in"
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, setToken, isConnected, logout } = authSlice.actions;
 export default authSlice.reducer;

@@ -4,7 +4,7 @@ import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../../redux/authSlice";
+import { setCredentials, setToken, isConnected, logout } from "../../redux/authSlice";
 
 function Signin() {
   const navigate = useNavigate();
@@ -23,7 +23,12 @@ function Signin() {
       })
       .then(function (LoginResponse) {
         const token = LoginResponse.data.body.token;
-        localStorage.setItem("token", token);
+        dispatch(
+          setToken({
+            token: token,
+            isConnected: "Sign out"
+          })
+        )
         axios.defaults.headers.common = {
           Authorization: `Bearer ${token}`,
         };
@@ -36,7 +41,6 @@ function Signin() {
           setCredentials({
             firstName: userProfile.firstName,
             lastName: userProfile.lastName,
-            isUserSignedInOut: "Sign out",
           })
         );
         navigate("/user");

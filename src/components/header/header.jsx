@@ -4,9 +4,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { logout } from "../../redux/authSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
-  const isUserSignedInOut = useSelector((state) => state.auth.isUserSignedInOut);
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const isConnected = useSelector(
+    (state) => state.auth.isConnected
+  );
+  const firstName = useSelector((state) => state.auth.firstName);
+  const lastName = useSelector((state) => state.auth.lastName);
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/signin");
+  };
 
   return (
     <nav class="main-nav">
@@ -18,9 +32,10 @@ function Header() {
         />
       </Link>
       <div>
-        <Link to="/signin" className="main-nav-item">
+        <Link to="" className="main-nav-item" onClick={handleLogout}>
+          {firstName}&nbsp;{lastName}
           <FontAwesomeIcon icon={faUserCircle} />
-          {isUserSignedInOut ? isUserSignedInOut : "Sign in"}
+          {isConnected}
         </Link>
       </div>
     </nav>
