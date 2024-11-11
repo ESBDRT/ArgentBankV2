@@ -1,14 +1,28 @@
 import React from "react";
+import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCredentials, setToken, isConnected, logout } from "../../redux/authSlice";
+
+import User from '../user/user'
 
 function Signin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  function RestrictLoginPage() {
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate("/User");
+        }
+    }, [navigate]);
+}
+
+RestrictLoginPage()
 
   function SigninRequest(event) {
     event.preventDefault();
@@ -23,6 +37,7 @@ function Signin() {
       })
       .then(function (LoginResponse) {
         const token = LoginResponse.data.body.token;
+        localStorage.setItem("token", token)
         dispatch(
           setToken({
             token: token,

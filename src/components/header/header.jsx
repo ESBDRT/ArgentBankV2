@@ -20,13 +20,14 @@ function Header() {
   const handleLogout = () => {
     dispatch(logout());
     navigate("/signin");
+    localStorage.removeItem('token')
   };
 
   return (
-    <nav class="main-nav">
+    <nav className="main-nav">
       <Link to="/" className="main-nav-logo">
         <img
-          class="main-nav-logo-image"
+          className="main-nav-logo-image"
           src={argentBankLogo}
           alt="Argent Bank Logo"
         />
