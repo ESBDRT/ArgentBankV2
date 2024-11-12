@@ -1,5 +1,6 @@
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
+import EditForm from "../../components/editForm/editForm";
 import { useSelector } from 'react-redux';
 
 function User() {
@@ -17,7 +18,7 @@ function User() {
             <br />
             {firstName} {lastName}
           </h1>
-          <button class="edit-button">Edit Name</button>
+          <EditForm/>
         </div>
         <h2 class="sr-only">Accounts</h2>
         <section class="account">

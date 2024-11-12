@@ -5,6 +5,7 @@ const authSlice = createSlice({
   initialState: {
     firstName: null,
     lastName: null,
+    userName: null,
     token: null,
     isConnected: "Login",
   },
@@ -12,6 +13,7 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
+      state.userName = action.payload.userName
     },
     setToken: (state, action) => {
       state.token = action.payload.token;
@@ -20,6 +22,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.firstName = null
       state.lastName = null
+      state.userName = null
       state.token = null
       state.isConnected = "Sign in"
     },

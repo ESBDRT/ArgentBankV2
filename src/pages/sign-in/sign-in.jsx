@@ -7,8 +7,6 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials, setToken, isConnected, logout } from "../../redux/authSlice";
 
-import User from '../user/user'
-
 function Signin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,6 +34,7 @@ RestrictLoginPage()
         password: password,
       })
       .then(function (LoginResponse) {
+        console.log(LoginResponse)
         const token = LoginResponse.data.body.token;
         localStorage.setItem("token", token)
         dispatch(
@@ -56,6 +55,7 @@ RestrictLoginPage()
           setCredentials({
             firstName: userProfile.firstName,
             lastName: userProfile.lastName,
+            userName: userProfile.userName,
           })
         );
         navigate("/user");
