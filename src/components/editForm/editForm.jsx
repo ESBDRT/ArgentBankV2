@@ -10,13 +10,23 @@ function EditForm() {
 
   const toggleForm = () => {
     setIsFormVisible((prevState) => !prevState);
+    document.getElementById("edit-btn").style.display="none"
   };
 
-  const firstName = useSelector((state) => state.auth.firstName);
-  const lastName = useSelector((state) => state.auth.lastName);
-  const userName = useSelector((state) => state.auth.userName);
-  const token = useSelector((state) => state.auth.token);
+  const closeForm = () => {
+    document.getElementById("edit-btn").style.display="initial"
+    setIsFormVisible((prevState) => !prevState);
+  }
+
+  const state = useSelector((state) => state);
+
+  const firstName = state.auth.firstName
+  const lastName = state.auth.lastName
+  const userName = state.auth.userName
+  const token = localStorage.getItem('token')
+
   const dispatch = useDispatch();
+  
 
   function EditRequest(event) {
     event.preventDefault();
@@ -30,7 +40,6 @@ function EditForm() {
       })
       .then(function(putResponse){
         const data = putResponse.data.body
-        console.log(data.firstName)
         dispatch(
           setCredentials({
             firstName : data.firstName,
@@ -38,6 +47,7 @@ function EditForm() {
             userName : data.userName,
           })
         )
+        document.getElementById('username').value= ""
       })
       .catch((error) => {
         console.error("There was an error updating the profile:", error);
@@ -46,7 +56,7 @@ function EditForm() {
 
   return (
     <>
-      <button onClick={toggleForm} className="edit-btn">
+      <button onClick={toggleForm} id="edit-btn" className="edit-btn">
         {" "}
         Edit Name
         {isFormVisible}
@@ -90,7 +100,7 @@ function EditForm() {
             <button type="submit" className="edit-btn save-cncl-btn">
               Save
             </button>
-            <button type="" className="edit-btn save-cncl-btn">
+            <button type="" onClick={closeForm} className="edit-btn save-cncl-btn">
               Cancel
             </button>
           </div>

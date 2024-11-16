@@ -1,11 +1,12 @@
+import './sign-in.css'
 import React from "react";
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setCredentials, setToken, isConnected, logout } from "../../redux/authSlice";
+import { useDispatch  } from "react-redux";
+import { setCredentials, setConnected } from "../../redux/authSlice";
 
 function Signin() {
   const navigate = useNavigate();
@@ -34,12 +35,10 @@ RestrictLoginPage()
         password: password,
       })
       .then(function (LoginResponse) {
-        console.log(LoginResponse)
         const token = LoginResponse.data.body.token;
         localStorage.setItem("token", token)
         dispatch(
-          setToken({
-            token: token,
+          setConnected({
             isConnected: "Sign out"
           })
         )
@@ -62,6 +61,7 @@ RestrictLoginPage()
       })
       .catch(function (error) {
         console.log("Error:", error);
+        document.getElementById('error-text').style.display='block'
       });
   }
 
@@ -72,6 +72,7 @@ RestrictLoginPage()
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
+          <p className='error-text' id='error-text'>Invalid login credentials</p>
           <form onSubmit={SigninRequest}>
             <div className="input-wrapper">
               <label htmlFor="username">Username</label>

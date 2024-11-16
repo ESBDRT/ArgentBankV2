@@ -1,0 +1,372 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /user/login:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      parameters:
+        - in: body
+          name: body
+          description: Login Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Login'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Login Successfully
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      parameters:
+        - in: body
+          name: body
+          description: Signup Payload
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Signup Successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/profile:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      #produces:
+       # - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      parameters:
+        - in: body
+          name: body
+          description: Update user profile attributes
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfile'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+          
+  /users/{id}/accounts:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Bank Modules
+      summary: Get user bank accounts
+      description: API route to fetch the bank account list of a user.
+      parameters:
+        - type: string
+          in: header
+          name: Authorization
+          description: Token
+          required: true
+        - type: integer
+          in: path
+          name: id
+          description: User ID
+          required: true 
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successfully retrieved account list
+          schema:
+            $ref: '#/definitions/UserBankAccounts'
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error   
+                
+  /accounts/{ID}/transactions{Month}{Year}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Bank Modules
+      summary: Get user monthly transactions
+      description: API route to fetch monthly transactions
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Token
+          required: true
+        - name: ID
+          in: path 
+          type: integer
+          description: Transaction ID
+          required: true
+        - name: Month 
+          in: path
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: Month
+          required: true
+        - name: Year
+          in: path
+          type: integer
+          description: Year
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successfully retrieved monthly transactions
+          schema:
+            $ref: '#/definitions/UserMonthlyTransactions'
+        '403':
+          description: Forbidden
+        '404':
+         description: Not found
+        '500':
+          description: Internal Server Error  
+              
+  /user/{transactionID}/details:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Bank Modules
+      summary: Get user transactions details
+      description: API route to fetch the details of the user bank transactions
+      parameters:
+        - type: string
+          in: header
+          name: Authorization
+          description: Token
+          required: true
+        - type: integer
+          in: path 
+          name: transactionID
+          description: The ID of the transaction
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successfully retrieved transactions details
+          schema:
+            $ref: '#/definitions/UserTransactionsDetails'
+        '403':
+          description: Forbidden
+        '404': 
+          description: Not Found
+        '500':
+          description: Internal Server Error   
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Bank Modules
+      summary: Modify transactions details
+      description: API route to modify transaction details
+      parameters:
+        - type: string
+          in: header
+          name: Authorization
+          description: Token
+          required: true
+        - type: integer
+          in: path 
+          name: transactionID
+          description: The ID of the transaction
+          required: true  
+      requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              date:
+                type: integer
+                description: Optional. Date of the transaction.
+              amount:
+                type: integer
+                description: Optional. Transaction amount.
+              category:
+                type: string
+                description: Optional. Transaction category.
+              note:
+                type: string
+                description: Optional. A note for the transaction.
+            additionalProperties: false
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successfully updated transaction details
+          schema:
+            $ref: '#/definitions/UserModifyDetails'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error      
+     
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+
+  User:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+      firstName:
+        type: string
+        description: user first name
+      lastName:
+        type: string
+        description: user last name
+      userName:
+        type: string
+        description: user public name
+        
+  Login:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+        
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          email:
+            type: string
+            
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+        
+  UserProfile:
+    type: object
+    properties:
+      userName:
+        type: string
+        
+  UserBankAccounts:
+    type: object
+    properties:
+      id:
+        type: integer
+      balance: 
+        type: integer
+        
+  UserMonthlyTransactions:
+    type: object
+    properties: 
+      id: 
+        type: integer
+      date: 
+        type: integer
+      amount:
+        type: integer
+      type: 
+        type: string
+   
+  UserTransactionsDetails:      
+    type: object
+    properties: 
+      id: 
+        type: integer
+      date:
+        type: integer
+      amount: 
+        type: integer
+      transaction type: 
+        type: string
+      category: 
+        type: string
+      description:  
+        type: string
+      balance: 
+        type: integer
+      note: 
+        type: string
+                    
+  UserModifyDetails:
+    type: object
+    properties: 
+      status: 
+        type: integer
+      message: 
+        type: string   

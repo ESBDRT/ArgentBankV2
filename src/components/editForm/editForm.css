@@ -36,3 +36,7 @@
     opacity: 0.70;
     cursor: not-allowed;
 }
+
+input:focus::placeholder {
+    color: transparent;
+  }

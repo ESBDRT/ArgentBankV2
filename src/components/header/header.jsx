@@ -15,8 +15,10 @@ function Header() {
   const isConnected = useSelector(
     (state) => state.auth.isConnected
   );
-  const firstName = useSelector((state) => state.auth.firstName);
-  const lastName = useSelector((state) => state.auth.lastName);
+  
+  const state = useSelector((state) => state);
+  const userName = state.auth.userName
+  
   const handleLogout = () => {
     dispatch(logout());
     navigate("/signin");
@@ -34,7 +36,7 @@ function Header() {
       </Link>
       <div>
         <Link to="" className="main-nav-item" onClick={handleLogout}>
-          {firstName}&nbsp;{lastName}
+        {userName}
           <FontAwesomeIcon icon={faUserCircle} />
           {isConnected}
         </Link>

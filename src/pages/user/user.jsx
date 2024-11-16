@@ -4,9 +4,9 @@ import EditForm from "../../components/editForm/editForm";
 import { useSelector } from 'react-redux';
 
 function User() {
-
-  const firstName = useSelector((state)=>state.auth.firstName)
-  const lastName = useSelector((state)=>state.auth.lastName)
+  
+  const state = useSelector((state) => state);
+  const userName = state.auth.userName;
 
   return (
     <>
@@ -16,7 +16,7 @@ function User() {
           <h1>
             Welcome back
             <br />
-            {firstName} {lastName}
+            {userName}
           </h1>
           <EditForm/>
         </div>
