@@ -12,6 +12,18 @@ function Signin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  function RestrictSignInPage() {
+  
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) { 
+            navigate("/user");
+        }
+    }, [navigate]);  
+  }
+  
+  RestrictSignInPage()
+
   function SigninRequest(event) {
     event.preventDefault();
 
