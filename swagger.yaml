@@ -127,7 +127,9 @@ paths:
         '200':
           description: Successfully retrieved account list
           schema:
-            $ref: '#/definitions/UserBankAccounts'
+            type: array
+            items: 
+              $ref: '#/definitions/UserBankAccounts'
         '401': 
           description: Invalid or missing token
         '403':
@@ -174,7 +176,9 @@ paths:
         '200':
           description: Successfully retrieved monthly transactions
           schema:
-            $ref: '#/definitions/Transaction'
+            type: array
+            items: 
+              $ref: '#/definitions/Transaction'
         '401': 
           description: Invalid or missing token
         '403':
@@ -209,8 +213,6 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/TransactionUpdate'  
-          
-          
       produces:
         - application/json
       responses:
@@ -234,8 +236,8 @@ securityDefinitions:
     type: apiKey
     name: Authorization
     in: header
+    
 definitions:
-
   User:
     properties:
       email:
