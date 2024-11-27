@@ -12,11 +12,9 @@ function Header() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const isConnected = useSelector(
-    (state) => state.auth.isConnected
-  );
   
   const state = useSelector((state) => state);
+  const isConnected = state.auth.isConnected
   const userName = state.auth.userName
   
   const handleLogout = () => {

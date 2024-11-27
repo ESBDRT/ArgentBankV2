@@ -12,17 +12,6 @@ function Signin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  function RestrictLoginPage() {
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            navigate("/User");
-        }
-    }, [navigate]);
-}
-
-RestrictLoginPage()
-
   function SigninRequest(event) {
     event.preventDefault();
 

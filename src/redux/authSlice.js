@@ -6,7 +6,7 @@ const authSlice = createSlice({
     firstName: null,
     lastName: null,
     userName: null,
-    isConnected: "Login",
+    isConnected: "Sign in",
   },
   reducers: {
     setCredentials: (state, action) => {

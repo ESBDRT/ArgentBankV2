@@ -128,14 +128,16 @@ paths:
           description: Successfully retrieved account list
           schema:
             $ref: '#/definitions/UserBankAccounts'
+        '401': 
+          description: Invalid or missing token
         '403':
           description: Forbidden
         '404':
-          description: Not Found
+          description: User not found
         '500':
           description: Internal Server Error   
                 
-  /accounts/{ID}/transactions{Month}{Year}:
+  /accounts/{id}/transactions:
     get:
       security:
         - Bearer: []
@@ -149,20 +151,20 @@ paths:
           type: string
           description: Token
           required: true
-        - name: ID
+        - name: id
           in: path 
           type: integer
           description: Transaction ID
           required: true
         - name: Month 
-          in: path
+          in: query
           type: integer
           minimum: 1
           maximum: 12
           description: Month
           required: true
         - name: Year
-          in: path
+          in: query
           type: integer
           description: Year
           required: true
@@ -172,46 +174,17 @@ paths:
         '200':
           description: Successfully retrieved monthly transactions
           schema:
-            $ref: '#/definitions/UserMonthlyTransactions'
+            $ref: '#/definitions/Transaction'
+        '401': 
+          description: Invalid or missing token
         '403':
           description: Forbidden
         '404':
-         description: Not found
-        '500':
-          description: Internal Server Error  
-              
-  /user/{transactionID}/details:
-    get:
-      security:
-        - Bearer: []
-      tags:
-        - Bank Modules
-      summary: Get user transactions details
-      description: API route to fetch the details of the user bank transactions
-      parameters:
-        - type: string
-          in: header
-          name: Authorization
-          description: Token
-          required: true
-        - type: integer
-          in: path 
-          name: transactionID
-          description: The ID of the transaction
-          required: true
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Successfully retrieved transactions details
-          schema:
-            $ref: '#/definitions/UserTransactionsDetails'
-        '403':
-          description: Forbidden
-        '404': 
-          description: Not Found
+          description: Account not found
         '500':
           description: Internal Server Error   
+              
+  /transactions/{id}:
     put:
       security:
         - Bearer: []
@@ -227,38 +200,32 @@ paths:
           required: true
         - type: integer
           in: path 
-          name: transactionID
+          name: id
           description: The ID of the transaction
-          required: true  
-      requestBody:
-      required: true
-      content:
-        application/json:
+          required: true 
+        - in: body
+          name: body
+          description: Update user profile attributes
+          required: true
           schema:
-            type: object
-            properties:
-              date:
-                type: integer
-                description: Optional. Date of the transaction.
-              amount:
-                type: integer
-                description: Optional. Transaction amount.
-              category:
-                type: string
-                description: Optional. Transaction category.
-              note:
-                type: string
-                description: Optional. A note for the transaction.
-            additionalProperties: false
+            $ref: '#/definitions/TransactionUpdate'  
+          
+          
       produces:
         - application/json
       responses:
         '200':
           description: Successfully updated transaction details
           schema:
-            $ref: '#/definitions/UserModifyDetails'
+            $ref: '#/definitions/Transaction'
         '400':
-          description: Invalid Fields
+          description: Invalid body
+        '401':
+          description: Wrong token
+        '403':  
+          description: Forbidden
+        '404':
+          description: Transaction not found
         '500':
           description: Internal Server Error      
      
@@ -330,6 +297,8 @@ definitions:
         type: integer
       balance: 
         type: integer
+      name: 
+        type: string
         
   UserMonthlyTransactions:
     type: object
@@ -343,7 +312,7 @@ definitions:
       type: 
         type: string
    
-  UserTransactionsDetails:      
+  Transaction:      
     type: object
     properties: 
       id: 
@@ -363,10 +332,10 @@ definitions:
       note: 
         type: string
                     
-  UserModifyDetails:
+  TransactionUpdate: 
     type: object
     properties: 
-      status: 
-        type: integer
-      message: 
-        type: string   
+      note: 
+        type: string 
+      category:   
+        type: string

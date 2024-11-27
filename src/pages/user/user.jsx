@@ -2,8 +2,23 @@ import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import EditForm from "../../components/editForm/editForm";
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 function User() {
+
+  function RestrictUserPage() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) { 
+            navigate("/signin");
+        }
+    }, [navigate]);  
+}
+
+RestrictUserPage()
   
   const state = useSelector((state) => state);
   const userName = state.auth.userName;
