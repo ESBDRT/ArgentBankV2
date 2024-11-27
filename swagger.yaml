@@ -134,8 +134,7 @@ paths:
           description: Not Found
         '500':
           description: Internal Server Error   
-          
-          
+                
   /accounts/{ID}/transactions{Month}{Year}:
     get:
       security:
@@ -180,8 +179,7 @@ paths:
          description: Not found
         '500':
           description: Internal Server Error  
-          
-          
+              
   /user/{transactionID}/details:
     get:
       security:
@@ -232,6 +230,26 @@ paths:
           name: transactionID
           description: The ID of the transaction
           required: true  
+      requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              date:
+                type: integer
+                description: Optional. Date of the transaction.
+              amount:
+                type: integer
+                description: Optional. Transaction amount.
+              category:
+                type: string
+                description: Optional. Transaction category.
+              note:
+                type: string
+                description: Optional. A note for the transaction.
+            additionalProperties: false
       produces:
         - application/json
       responses:
@@ -243,10 +261,7 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error      
-    
-          
-          
- 
+     
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -327,9 +342,7 @@ definitions:
         type: integer
       type: 
         type: string
-  
-  
-  
+   
   UserTransactionsDetails:      
     type: object
     properties: 
@@ -349,8 +362,7 @@ definitions:
         type: integer
       note: 
         type: string
-       
-                
+                    
   UserModifyDetails:
     type: object
     properties: 
