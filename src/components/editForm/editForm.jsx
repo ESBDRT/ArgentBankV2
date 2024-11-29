@@ -40,6 +40,7 @@ function EditForm() {
       })
       .then(function(putResponse){
         const data = putResponse.data.body
+        closeForm()
         dispatch(
           setCredentials({
             firstName : data.firstName,

@@ -188,7 +188,7 @@ paths:
         '500':
           description: Internal Server Error   
               
-  /transactions/{id}:
+  /transaction/{id}:
     put:
       security:
         - Bearer: []
@@ -229,8 +229,42 @@ paths:
         '404':
           description: Transaction not found
         '500':
-          description: Internal Server Error      
-     
+          description: Internal Server Error  
+          
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Bank Modules
+      summary: Get user transaction details
+      description: API route to fetch transaction details.
+      parameters:
+        - type: string
+          in: header
+          name: Authorization
+          description: Token
+          required: true
+        - type: integer
+          in: path
+          name: id
+          description: User ID
+          required: true 
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successfully retrieved transaction details
+          schema:
+              $ref: '#/definitions/TransactionDetails'
+        '401': 
+          description: Invalid or missing token
+        '403':
+          description: Forbidden
+        '404':
+          description: Transaction not found
+        '500':
+          description: Internal Server Error        
+    
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -301,22 +335,10 @@ definitions:
         type: integer
       name: 
         type: string
-        
-  UserMonthlyTransactions:
+  
+  TransactionDetails:
     type: object
-    properties: 
-      id: 
-        type: integer
-      date: 
-        type: integer
-      amount:
-        type: integer
-      type: 
-        type: string
-   
-  Transaction:      
-    type: object
-    properties: 
+    properties:
       id: 
         type: integer
       date:
@@ -333,6 +355,21 @@ definitions:
         type: integer
       note: 
         type: string
+        
+   
+  Transaction:      
+    type: object
+    properties: 
+      id: 
+        type: integer
+      date:
+        type: integer
+      amount: 
+        type: integer
+      description:  
+        type: string
+      balance: 
+        type: integer
                     
   TransactionUpdate: 
     type: object

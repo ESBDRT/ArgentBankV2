@@ -1,15 +1,13 @@
-import Chat from '../features/chat'
-import Money from '../features/money'
-import Security from '../features/security'
-
-function Features() {
+function Features({content, image, alt, title}) {
     return (
-        <>
-            <Chat />
-            <Money />
-            <Security />
-        </>
-    )
+        <div class="feature-item">
+          <img src={image} alt={alt} class="feature-icon" />
+          <h3 class="feature-item-title">{title}</h3>
+          <p>
+            {content}
+          </p>
+        </div>
+      );
 }
 
 export default Features;
